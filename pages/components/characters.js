@@ -1,14 +1,44 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Constans } from "../constants";
+import md5 from "js-md5";
 
 export default function Characters({ characters }) {
   console.log(characters.data.results);
-
   const [characterName, setCharacterName] = useState("");
   const [filteredCharacters, setFilteredCharacters] = useState(
     characters.data.results
   );
+
+   async function searchCharacter(characterName) {
+ 
+    let url = new URL(Constans.BASE_URL + "v1/public/characters");
+
+    const ts = Number(new Date());
+    const hash = md5.create();
+    hash.update(ts + Constans.PRIVATE_KEY + Constans.PUBLIC_KEY);
+
+    var params = {
+      nameStartsWith: characterName,
+      apikey: Constans.PUBLIC_KEY,
+      hash: hash,
+      ts: ts,
+    };
+    Object.keys(params).forEach((key) => url.searchParams.append(key, params[key])
+    );
+    const request = await fetch(url, {
+      method: "GET",
+
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const characters = await request.json();
+
+    setFilteredCharacters(characters.data.results)
+  }
 
   const filter = (e) => {
     console.log(e);
@@ -19,6 +49,10 @@ export default function Characters({ characters }) {
         return character.name.toLowerCase().startsWith(keyword.toLowerCase());
         // Use the toLowerCase() method to make it case-insensitive
       });
+      console.log({ results: results });
+      if (results.length == 0) {
+        searchCharacter(keyword)
+      }
       setFilteredCharacters(results);
     } else {
       setFilteredCharacters(characters.data.results);
