@@ -1,49 +1,30 @@
 import Head from "next/head";
 import { Constans } from "../constants";
 import md5 from "js-md5";
+import Image from "next/image";
 export default function CharacterDetail({ character }) {
   console.log(character);
   return (
-    <div className="movie">
+    <div className="character">
       <Head>
-        <title>{character.name}</title>
+        <title>{character.data.results[0].name}</title>
       </Head>
-      <h3>{character.name}</h3>
+      <h3>{character.data.results[0].name}</h3>
+      <h5 style={{maxWidth:'500px'}}>{character.data.results[0].description}</h5>
+      <Image
+        src={character.data.results[0].thumbnail.path + "." + character.data.results[0].thumbnail.extension}
+        alt="Picture of the author"
+        width={350}
+        height={400}
+      />
       <style jsx>{`
-        .movie {
-          width: 1200px;
-          margin: 0 auto;
-          position: relative;
+        .character {
+          width: 100%;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          align-items:center;
           padding: 20px;
-        }
-        h3 {
-          font-size: 30px;
-          font-weight: bold;
-          margin-bottom: 20px;
-        }
-        .summary {
-          font-size: 18px;
-          color: #666;
-          line-height: 1.7;
-        }
-        .cover {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 600px;
-          background-size: cover;
-          opacity: 0.3;
-          z-index: -1;
-        }
-        .cover ::before {
-          content: "";
-          background: linear-gradient(to bottom, transparent, #ddd);
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
         }
       `}</style>
     </div>
@@ -52,7 +33,7 @@ export default function CharacterDetail({ character }) {
 
 export async function getServerSideProps({ params }) {
   console.log(params);
-  let url = new URL(Constans.BASE_URL + "v1/public/characters/" + params.id);
+  let url = new URL(Constans.BASE_URL + "v1/public/characters/" + "1017100");
 
   const ts = Number(new Date());
   const hash = md5.create();
