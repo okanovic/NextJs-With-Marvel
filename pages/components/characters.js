@@ -41,7 +41,7 @@ export default function Characters({ characters }) {
         {filteredCharacters && filteredCharacters.length > 0 ? (
           filteredCharacters.map((character) => (
             <div key={character.id}>
-              <Link href={`/character/${character.id}`}>
+              <Link href={`/character/${character.id.toString()}`}>
                 <a key={character.id}>
                   <h5>{character.name}</h5>
                   <Image

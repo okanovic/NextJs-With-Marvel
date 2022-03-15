@@ -10,9 +10,15 @@ export default function CharacterDetail({ character }) {
         <title>{character.data.results[0].name}</title>
       </Head>
       <h3>{character.data.results[0].name}</h3>
-      <h5 style={{maxWidth:'500px'}}>{character.data.results[0].description}</h5>
+      <h5 style={{ maxWidth: "500px" }}>
+        {character.data.results[0].description}
+      </h5>
       <Image
-        src={character.data.results[0].thumbnail.path + "." + character.data.results[0].thumbnail.extension}
+        src={
+          character.data.results[0].thumbnail.path +
+          "." +
+          character.data.results[0].thumbnail.extension
+        }
         alt="Picture of the author"
         width={350}
         height={400}
@@ -20,10 +26,10 @@ export default function CharacterDetail({ character }) {
       <style jsx>{`
         .character {
           width: 100%;
-          display:flex;
-          flex-direction:column;
-          justify-content:center;
-          align-items:center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
           padding: 20px;
         }
       `}</style>
@@ -33,7 +39,9 @@ export default function CharacterDetail({ character }) {
 
 export async function getServerSideProps({ params }) {
   console.log(params);
-  let url = new URL(Constans.BASE_URL + "v1/public/characters/" + "1017100");
+  let url = new URL(
+    `${Constans.BASE_URL}` + "v1/public/characters/" + params.url
+  );
 
   const ts = Number(new Date());
   const hash = md5.create();
