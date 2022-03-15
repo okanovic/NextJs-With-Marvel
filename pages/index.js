@@ -8,8 +8,9 @@ export default function Home({ characters }) {
       <Head>
         <title>Marvel Character List</title>
       </Head>
-
-      <Characters characters={characters} />
+      <div>
+        <Characters characters={characters} />
+      </div>
     </>
   );
 }
@@ -24,7 +25,7 @@ export async function getServerSideProps() {
   const hash = md5.create();
   hash.update(ts + PRIVATE_KEY + PUBLIC_KEY);
 
- var params = { apikey: PUBLIC_KEY, hash: hash, ts: ts };
+  var params = { apikey: PUBLIC_KEY, hash: hash, ts: ts };
   Object.keys(params).forEach((key) =>
     url.searchParams.append(key, params[key])
   );
