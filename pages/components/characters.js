@@ -5,10 +5,10 @@ import { Constans } from "../constants";
 import md5 from "js-md5";
 
 export default function Characters({ characters }) {
-  console.log(characters.data.results);
+  console.log(characters);
   const [characterName, setCharacterName] = useState("");
   const [filteredCharacters, setFilteredCharacters] = useState(
-    characters.data.results
+    characters
   );
 
    async function searchCharacter(characterName) {
@@ -71,6 +71,7 @@ export default function Characters({ characters }) {
         className="input"
         placeholder="Filter"
       />
+      
       <div className="characters">
         {filteredCharacters && filteredCharacters.length > 0 ? (
           filteredCharacters.map((character) => (
