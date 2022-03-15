@@ -1,27 +1,64 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Characters({ characters }) {
   console.log(characters.data.results);
+
+  const [characterName, setCharacterName] = useState("");
+  const [filteredCharacters, setFilteredCharacters] = useState(characters.data.results);
+
+  const filter = (e) => {
+    console.log(e);
+    const keyword = e.target.value;
+
+    if (keyword !== "") {
+      const results = characters.data.results.filter((character) => {
+        return character.name.toLowerCase().startsWith(keyword.toLowerCase());
+        // Use the toLowerCase() method to make it case-insensitive
+      });
+      setFilteredCharacters(results);
+      console.log(results)
+    } else {
+      setFilteredCharacters(characters.data.results);
+      // If the text field is empty, show all users
+    }
+
+    setCharacterName(keyword);
+  };
+  console.log(filteredCharacters.length);
   return (
     <div className="character-list">
       <h2 style={{ color: "red", textAlign: "center" }}>Character List</h2>
+      <input
+        type="search"
+        value={characterName}
+        onChange={filter}
+        className="input"
+        placeholder="Filter"
+      />
       <div className="characters">
-        {characters.data.results.map((character) => (
-          <Link href={`/character/${character.id}`}>
-            <a>
-              <h5>{character.name}</h5>
-              <Image
-                src={
-                  character.thumbnail.path + "." + character.thumbnail.extension
-                }
-                alt="Picture of the author"
-                width={350}
-                height={400}
-              />
-            </a>
-          </Link>
-        ))}
+        {filteredCharacters && filteredCharacters.length > 0 ? (
+          filteredCharacters.map((character) => (
+            <Link href={`/character/${character.id}`}>
+              <a>
+                <h5>{character.name}</h5>
+                <Image
+                  src={
+                    character.thumbnail.path +
+                    "." +
+                    character.thumbnail.extension
+                  }
+                  alt="Picture of the author"
+                  width={350}
+                  height={400}
+                />
+              </a>
+            </Link>
+          ))
+        ) : (
+          <h2>No item found</h2>
+        )}
       </div>
 
       <style jsx>{`

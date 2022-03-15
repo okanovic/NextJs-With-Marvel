@@ -3,6 +3,9 @@ import Characters from "./components/characters";
 import md5 from "js-md5";
 
 export default function Home({ characters }) {
+
+
+
   return (
     <>
       <Head>
