@@ -6,7 +6,9 @@ export default function Characters({ characters }) {
   console.log(characters.data.results);
 
   const [characterName, setCharacterName] = useState("");
-  const [filteredCharacters, setFilteredCharacters] = useState(characters.data.results);
+  const [filteredCharacters, setFilteredCharacters] = useState(
+    characters.data.results
+  );
 
   const filter = (e) => {
     console.log(e);
@@ -18,10 +20,8 @@ export default function Characters({ characters }) {
         // Use the toLowerCase() method to make it case-insensitive
       });
       setFilteredCharacters(results);
-      console.log(results)
     } else {
       setFilteredCharacters(characters.data.results);
-      // If the text field is empty, show all users
     }
 
     setCharacterName(keyword);
@@ -93,6 +93,10 @@ export default function Characters({ characters }) {
           color: #fff;
           background: linear-gradient(to top, #000, transparent);
           padding: 50px 20px 20px 20px;
+        }
+        input{
+            padding: 10px 17.5px;
+            min-width:250px;
         }
       `}</style>
     </div>
