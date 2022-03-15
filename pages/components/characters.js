@@ -40,21 +40,23 @@ export default function Characters({ characters }) {
       <div className="characters">
         {filteredCharacters && filteredCharacters.length > 0 ? (
           filteredCharacters.map((character) => (
-            <Link href={`/character/${character.id}`}>
-              <a>
-                <h5>{character.name}</h5>
-                <Image
-                  src={
-                    character.thumbnail.path +
-                    "." +
-                    character.thumbnail.extension
-                  }
-                  alt="Picture of the author"
-                  width={350}
-                  height={400}
-                />
-              </a>
-            </Link>
+            <div key={character.id}>
+              <Link href={`/character/${character.id}`}>
+                <a key={character.id}>
+                  <h5>{character.name}</h5>
+                  <Image
+                    src={
+                      character.thumbnail.path +
+                      "." +
+                      character.thumbnail.extension
+                    }
+                    alt="Picture of the author"
+                    width={350}
+                    height={400}
+                  />
+                </a>
+              </Link>
+            </div>
           ))
         ) : (
           <h2>No item found</h2>
@@ -94,9 +96,9 @@ export default function Characters({ characters }) {
           background: linear-gradient(to top, #000, transparent);
           padding: 50px 20px 20px 20px;
         }
-        input{
-            padding: 10px 17.5px;
-            min-width:250px;
+        input {
+          padding: 10px 17.5px;
+          min-width: 250px;
         }
       `}</style>
     </div>

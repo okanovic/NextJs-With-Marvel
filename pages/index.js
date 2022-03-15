@@ -4,6 +4,10 @@ import md5 from "js-md5";
 import { Constans } from "./constants";
 
 export default function Home({ characters }) {
+  console.log(characters)
+  const setSearchedCharacterName = (value) => {
+    console.log(value)
+  }
   return (
     <>
       <Head>
@@ -42,6 +46,3 @@ export async function getServerSideProps() {
     },
   };
 }
-
-//Public Key:
-//Private Key:
