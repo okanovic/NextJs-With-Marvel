@@ -2,7 +2,6 @@ import Head from "next/head";
 import md5 from "js-md5";
 import Image from "next/image";
 export default function CharacterDetail({ character }) {
-  console.log(character);
   return (
     <div className="character">
       <Head>
@@ -40,7 +39,6 @@ export async function getServerSideProps({ params }) {
   let PUBLIC_KEY  = "a3352827a7f8007a1a6a6abfe54fca5d";
   let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f"
   let BASE_URL = "https://gateway.marvel.com/"
-  console.log(params);
   let url = new URL(
     `${BASE_URL}` + "v1/public/characters/" + params.url
   );

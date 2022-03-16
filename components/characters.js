@@ -4,7 +4,6 @@ import { useState } from "react";
 import md5 from "js-md5";
 import InfiniteScroll from "react-infinite-scroll-component";
 export default function Characters({ characters }) {
-  console.log(characters);
   const [characterName, setCharacterName] = useState("");
   const [filteredCharacters, setFilteredCharacters] = useState(
     characters.data.results
@@ -43,7 +42,6 @@ export default function Characters({ characters }) {
   }
 
   const filter = (e) => {
-    console.log(e);
     const keyword = e.target.value;
 
     if (keyword !== "") {
@@ -51,7 +49,6 @@ export default function Characters({ characters }) {
         return character.name.toLowerCase().startsWith(keyword.toLowerCase());
         // Use the toLowerCase() method to make it case-insensitive
       });
-      console.log({ results: results });
       if (results.length == 0) {
         searchCharacter(keyword);
       }
