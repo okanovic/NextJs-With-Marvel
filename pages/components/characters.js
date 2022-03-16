@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Constans } from "../constants";
+import Constans from "../constants";
 import md5 from "js-md5";
 import InfiniteScroll from "react-infinite-scroll-component";
 export default function Characters({ characters }) {

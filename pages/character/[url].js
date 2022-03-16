@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Constans } from "../constants";
+import Constans from "../constants";
 import md5 from "js-md5";
 import Image from "next/image";
 export default function CharacterDetail({ character }) {

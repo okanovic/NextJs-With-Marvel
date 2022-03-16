@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Characters from "./components/characters";
 import md5 from "js-md5";
-import { Constans } from "./constants";
+import Constans from "./constants";
 export default function Home({ characters }) {
 
   return (
