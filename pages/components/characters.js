@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Constans } from "../constants";
 import md5 from "js-md5";
-
+import InfiniteScroll from "react-infinite-scroll-component";
 export default function Characters({ characters }) {
   console.log(characters);
   const [characterName, setCharacterName] = useState("");
@@ -11,8 +11,7 @@ export default function Characters({ characters }) {
     characters.data.results
   );
 
-   async function searchCharacter(characterName) {
- 
+  async function searchCharacter(characterName) {
     let url = new URL(Constans.BASE_URL + "v1/public/characters");
 
     const ts = Number(new Date());
@@ -25,7 +24,8 @@ export default function Characters({ characters }) {
       hash: hash,
       ts: ts,
     };
-    Object.keys(params).forEach((key) => url.searchParams.append(key, params[key])
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
     );
     const request = await fetch(url, {
       method: "GET",
@@ -37,7 +37,7 @@ export default function Characters({ characters }) {
     });
     const characters = await request.json();
 
-    setFilteredCharacters(characters.data.results)
+    setFilteredCharacters(characters.data.results);
   }
 
   const filter = (e) => {
@@ -51,7 +51,7 @@ export default function Characters({ characters }) {
       });
       console.log({ results: results });
       if (results.length == 0) {
-        searchCharacter(keyword)
+        searchCharacter(keyword);
       }
       setFilteredCharacters(results);
     } else {
@@ -59,6 +59,39 @@ export default function Characters({ characters }) {
     }
 
     setCharacterName(keyword);
+  };
+
+  const getMoreCharacter = async () => {
+    let url = new URL(Constans.BASE_URL + "v1/public/characters");
+
+    const ts = Number(new Date());
+    const hash = md5.create();
+    hash.update(ts + Constans.PRIVATE_KEY + Constans.PUBLIC_KEY);
+
+    var params = {
+      limit: filteredCharacters.length,
+      offset: filteredCharacters.length,
+      apikey: Constans.PUBLIC_KEY,
+      hash: hash,
+      ts: ts,
+    };
+    Object.keys(params).forEach((key) =>
+      url.searchParams.append(key, params[key])
+    );
+    const request = await fetch(url, {
+      method: "GET",
+
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const characters = await request.json();
+
+    setFilteredCharacters((character) => [
+      ...character,
+      ...characters.data.results,
+    ]);
   };
 
   return (
@@ -71,32 +104,39 @@ export default function Characters({ characters }) {
         className="input"
         placeholder="Filter"
       />
-      
-      <div className="characters">
-        {filteredCharacters && filteredCharacters.length > 0 ? (
-          filteredCharacters.map((character) => (
-            <div key={character.id}>
-              <Link href={`/character/${character.id.toString()}`}>
-                <a key={character.id}>
-                  <h5>{character.name}</h5>
-                  <Image
-                    src={
-                      character.thumbnail.path +
-                      "." +
-                      character.thumbnail.extension
-                    }
-                    alt="Picture of the author"
-                    width={350}
-                    height={400}
-                  />
-                </a>
-              </Link>
-            </div>
-          ))
-        ) : (
-          <h2>No item found</h2>
-        )}
-      </div>
+      <InfiniteScroll
+        dataLength={filteredCharacters.length}
+        next={getMoreCharacter}
+        hasMore={true}
+        loader={<h3> Loading...</h3>}
+        endMessage={<h4>Nothing more to show</h4>}
+      >
+        <div className="characters">
+          {filteredCharacters && filteredCharacters.length > 0 ? (
+            filteredCharacters.map((character) => (
+              <div key={character.id}>
+                <Link href={`/character/${character.id.toString()}`}>
+                  <a key={character.id}>
+                    <h5>{character.name}</h5>
+                    <Image
+                      src={
+                        character.thumbnail.path +
+                        "." +
+                        character.thumbnail.extension
+                      }
+                      alt="Picture of the author"
+                      width={350}
+                      height={400}
+                    />
+                  </a>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <h2>No item found</h2>
+          )}
+        </div>
+      </InfiniteScroll>
 
       <style jsx>{`
         .character-list {
