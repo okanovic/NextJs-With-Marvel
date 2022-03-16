@@ -8,7 +8,7 @@ export default function Characters({ characters }) {
   console.log(characters);
   const [characterName, setCharacterName] = useState("");
   const [filteredCharacters, setFilteredCharacters] = useState(
-    characters
+    characters.data.results
   );
 
    async function searchCharacter(characterName) {
@@ -60,7 +60,7 @@ export default function Characters({ characters }) {
 
     setCharacterName(keyword);
   };
-  console.log(filteredCharacters.length);
+
   return (
     <div className="character-list">
       <h2 style={{ color: "red", textAlign: "center" }}>Character List</h2>
