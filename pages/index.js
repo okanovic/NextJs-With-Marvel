@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Characters from "./components/characters";
+import Characters from "./characters";
 import md5 from "js-md5";
 export default function Home({ characters }) {
 
