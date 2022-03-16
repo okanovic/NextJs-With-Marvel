@@ -108,7 +108,6 @@ export default function Characters({ characters }) {
         dataLength={filteredCharacters.length}
         next={getMoreCharacter}
         hasMore={true}
-        loader={<h3> Loading...</h3>}
         endMessage={<h4>Nothing more to show</h4>}
       >
         <div className="characters">
