@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import Constans from "../constants";
 import md5 from "js-md5";
 import InfiniteScroll from "react-infinite-scroll-component";
 export default function Characters({ characters }) {
@@ -12,15 +11,18 @@ export default function Characters({ characters }) {
   );
 
   async function searchCharacter(characterName) {
-    let url = new URL(Constans.BASE_URL + "v1/public/characters");
+    let PUBLIC_KEY  = "a3352827a7f8007a1a6a6abfe54fca5d";
+    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f"
+    let BASE_URL = "https://gateway.marvel.com/"
+    let url = new URL(BASE_URL + "v1/public/characters");
 
     const ts = Number(new Date());
     const hash = md5.create();
-    hash.update(ts + Constans.PRIVATE_KEY + Constans.PUBLIC_KEY);
+    hash.update(ts + PRIVATE_KEY + PUBLIC_KEY);
 
     var params = {
       nameStartsWith: characterName,
-      apikey: Constans.PUBLIC_KEY,
+      apikey: PUBLIC_KEY,
       hash: hash,
       ts: ts,
     };
@@ -62,16 +64,19 @@ export default function Characters({ characters }) {
   };
 
   const getMoreCharacter = async () => {
-    let url = new URL(Constans.BASE_URL + "v1/public/characters");
+    let PUBLIC_KEY  = "a3352827a7f8007a1a6a6abfe54fca5d";
+    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f"
+    let BASE_URL = "https://gateway.marvel.com/"
+    let url = new URL(BASE_URL + "v1/public/characters");
 
     const ts = Number(new Date());
     const hash = md5.create();
-    hash.update(ts + Constans.PRIVATE_KEY + Constans.PUBLIC_KEY);
+    hash.update(ts + PRIVATE_KEY + PUBLIC_KEY);
 
     var params = {
       limit: filteredCharacters.length,
       offset: filteredCharacters.length,
-      apikey: Constans.PUBLIC_KEY,
+      apikey: PUBLIC_KEY,
       hash: hash,
       ts: ts,
     };
