@@ -1,8 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import md5 from "js-md5";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { BASE_URL, REQ_HEADER_CONFIG, REQ_URL } from "../@core/constants";
+
 export default function Characters({ characters }) {
   const [characterName, setCharacterName] = useState("");
   const [filteredCharacters, setFilteredCharacters] = useState(
@@ -10,32 +11,12 @@ export default function Characters({ characters }) {
   );
 
   async function searchCharacter(characterName) {
-    let PUBLIC_KEY = "a3352827a7f8007a1a6a6abfe54fca5d";
-    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f";
-    let BASE_URL = "https://gateway.marvel.com/";
     let url = new URL(BASE_URL + "v1/public/characters");
 
-    const ts = Number(new Date());
-    const hash = md5.create();
-    hash.update(ts + PRIVATE_KEY + PUBLIC_KEY);
-
-    var params = {
-      nameStartsWith: characterName,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-      ts: ts,
-    };
-    Object.keys(params).forEach((key) =>
-      url.searchParams.append(key, params[key])
+    const request = await fetch(
+      REQ_URL(url, null, characterName, null),
+      REQ_HEADER_CONFIG("GET")
     );
-    const request = await fetch(url, {
-      method: "GET",
-
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
     const characters = await request.json();
 
     setFilteredCharacters(characters.data.results);
@@ -63,33 +44,12 @@ export default function Characters({ characters }) {
   };
 
   const getMoreCharacter = async () => {
-    let PUBLIC_KEY = "a3352827a7f8007a1a6a6abfe54fca5d";
-    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f";
-    let BASE_URL = "https://gateway.marvel.com/";
     let url = new URL(BASE_URL + "v1/public/characters");
 
-    const ts = Number(new Date());
-    const hash = md5.create();
-    hash.update(ts + PRIVATE_KEY + PUBLIC_KEY);
-
-    var params = {
-      limit: 10,
-      offset: filteredCharacters.length,
-      apikey: PUBLIC_KEY,
-      hash: hash,
-      ts: ts,
-    };
-    Object.keys(params).forEach((key) =>
-      url.searchParams.append(key, params[key])
+    const request = await fetch(
+      REQ_URL(url, 10, null, filteredCharacters.length),
+      REQ_HEADER_CONFIG("GET")
     );
-    const request = await fetch(url, {
-      method: "GET",
-
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
     const characters = await request.json();
 
     setFilteredCharacters((character) => [
