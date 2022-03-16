@@ -71,7 +71,7 @@ export default function Characters({ characters }) {
     hash.update(ts + PRIVATE_KEY + PUBLIC_KEY);
 
     var params = {
-      limit: filteredCharacters.length,
+      limit: 10,
       offset: filteredCharacters.length,
       apikey: PUBLIC_KEY,
       hash: hash,
@@ -103,6 +103,7 @@ export default function Characters({ characters }) {
         type="search"
         value={characterName}
         onChange={filter}
+        delay
         className="input"
         placeholder="Filter"
       />
