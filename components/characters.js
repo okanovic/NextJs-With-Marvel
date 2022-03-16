@@ -10,9 +10,9 @@ export default function Characters({ characters }) {
   );
 
   async function searchCharacter(characterName) {
-    let PUBLIC_KEY  = "a3352827a7f8007a1a6a6abfe54fca5d";
-    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f"
-    let BASE_URL = "https://gateway.marvel.com/"
+    let PUBLIC_KEY = "a3352827a7f8007a1a6a6abfe54fca5d";
+    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f";
+    let BASE_URL = "https://gateway.marvel.com/";
     let url = new URL(BASE_URL + "v1/public/characters");
 
     const ts = Number(new Date());
@@ -43,27 +43,29 @@ export default function Characters({ characters }) {
 
   const filter = (e) => {
     const keyword = e.target.value;
-
-    if (keyword !== "") {
-      const results = characters.data.results.filter((character) => {
-        return character.name.toLowerCase().startsWith(keyword.toLowerCase());
-        // Use the toLowerCase() method to make it case-insensitive
-      });
-      if (results.length == 0) {
-        searchCharacter(keyword);
+    setTimeout(() => {
+      //search function
+      if (keyword !== "") {
+        const results = characters.data.results.filter((character) => {
+          return character.name.toLowerCase().startsWith(keyword.toLowerCase());
+          // Use the toLowerCase() method to make it case-insensitive
+        });
+        if (results.length == 0) {
+          searchCharacter(keyword);
+        }
+        setFilteredCharacters(results);
+      } else {
+        setFilteredCharacters(characters.data.results);
       }
-      setFilteredCharacters(results);
-    } else {
-      setFilteredCharacters(characters.data.results);
-    }
+    }, 300);
 
     setCharacterName(keyword);
   };
 
   const getMoreCharacter = async () => {
-    let PUBLIC_KEY  = "a3352827a7f8007a1a6a6abfe54fca5d";
-    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f"
-    let BASE_URL = "https://gateway.marvel.com/"
+    let PUBLIC_KEY = "a3352827a7f8007a1a6a6abfe54fca5d";
+    let PRIVATE_KEY = "1d073ef58db06206c2816841dca2775d27ba3e7f";
+    let BASE_URL = "https://gateway.marvel.com/";
     let url = new URL(BASE_URL + "v1/public/characters");
 
     const ts = Number(new Date());
@@ -103,7 +105,6 @@ export default function Characters({ characters }) {
         type="search"
         value={characterName}
         onChange={filter}
-        delay
         className="input"
         placeholder="Filter"
       />
